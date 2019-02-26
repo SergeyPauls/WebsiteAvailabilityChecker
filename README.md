@@ -1,0 +1,2 @@
+# WebsiteAvailabilityChecker
+Website Availability Monitoring
