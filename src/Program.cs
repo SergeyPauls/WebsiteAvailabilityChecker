@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Logging;
 using WebsiteAvailabilityChecker.Helper;
 using WebsiteAvailabilityChecker.Infrastructure;
 
@@ -14,11 +15,17 @@ namespace WebsiteAvailabilityChecker
             host.Run();
         }
 
-        public static IWebHost BuildWebHost(string[] args)
+        private static IWebHost BuildWebHost(string[] args)
         {
             return WebHost.CreateDefaultBuilder(args)
+                .SuppressStatusMessages(true)
                 .UseStartup<Startup>()
-                .Build();
+                .ConfigureLogging((hostingContext, builder) =>
+                {
+                    builder.AddConfiguration(hostingContext.Configuration.GetSection("LOGGING"));
+                    builder.AddDebug();
+                    builder.AddConsole();
+                }).Build();
         }
     }
 }
